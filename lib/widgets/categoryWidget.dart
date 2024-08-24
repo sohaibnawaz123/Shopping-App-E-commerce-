@@ -69,6 +69,7 @@ class CategoryWidget extends StatelessWidget {
                               tagSpacing:0.0 ,
                               color: AppConstants.appSecondryColor,
                               borderRadius: 20.0,
+                              
                               width: Get.width/4.0,
                               heightImage: Get.height/9,
                               imageProvider: CachedNetworkImageProvider(categoryModal.catImage,),

@@ -1,7 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
 import '../../utils/constant.dart';
 
 class CartScreen extends StatelessWidget {
@@ -12,7 +11,11 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppConstants.appTextColor,
       appBar: AppBar(
-        elevation: 2,
+        actions: const <Widget>[Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          child: Icon(Icons.delete_forever,color: AppConstants.appTextColor,),
+        )],
+        elevation: 5,
         iconTheme: const IconThemeData(),
         title:
             Text("My Cart", style: mainHeading(28, AppConstants.appTextColor)),
@@ -97,17 +100,54 @@ class CartScreen extends StatelessWidget {
         width: Get.width,
         height: Get.height / 8,
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-          color: AppConstants.appMainColor
-        ),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            color: AppConstants.appSecondryColor),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Sub Total",style: mainHeading(24, AppConstants.appTextColor),),
+              Row(
+                children: [
+                  Text(
+                    "SUB TOTAL=",
+                    style: mainHeading(24, AppConstants.appTextColor,fontweight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                width: 10,
+              ),
+              Text(
+                "Rs: 3000",
+                style: mainHeading(24, AppConstants.appTextColor),
+              ),
+                ],
+              ),
               
-              ],
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    maximumSize: const Size(120,50),
+                    padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)
+                    )
+                  ),
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Checkout",
+                        style: mainHeading(20, AppConstants.appSecondryColor),
+                      ),
+                      const Icon(
+                        Icons.shopping_cart_checkout_outlined,
+                        color: AppConstants.appSecondryColor,
+                      )
+                    ],
+                  ))
+            ],
           ),
         ),
       ),

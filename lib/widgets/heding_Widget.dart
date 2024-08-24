@@ -12,17 +12,17 @@ Widget headingWidget(String heading,String subTitle,String buttonText, VoidCallb
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(heading,style: mainHeading(24.0, AppConstants.appMainColor,fontweight: FontWeight.w500),),
-            Text(subTitle,style: mainHeading(16.0, AppConstants.appSecondryColor),),
+            Text(heading,style: mainHeading(24.0, AppConstants.appMainColor,fontweight: FontWeight.w600),),
+            Text(subTitle,style: mainHeading(18.0, AppConstants.appSecondryColor,fontweight: FontWeight.w500),),
           ],
         ),
         ElevatedButton(onPressed: ontap,
         style:ElevatedButton.styleFrom(
-          backgroundColor: AppConstants.appMainColor,
+          backgroundColor: AppConstants.appSecondryColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0)
+            borderRadius: BorderRadius.circular(10.0)
           )
-        ) , child: Text(buttonText,style: mainHeading(16, AppConstants.appTextColor),),)
+        ) , child: Text(buttonText,style: mainHeading(18, AppConstants.appTextColor),),)
     ],),
   );
 }
