@@ -1,12 +1,10 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, must_be_immutable
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_card/image_card.dart';
 import '../../modals/cartModal.dart';
 import '../../utils/constant.dart';
 
