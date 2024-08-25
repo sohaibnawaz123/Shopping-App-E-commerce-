@@ -27,7 +27,7 @@ class MainScreen extends StatelessWidget {
             style: mainHeading(28, AppConstants.appTextColor)),
         backgroundColor: AppConstants.appMainColor,
         actions: [GestureDetector(
-          onTap: () => Get.to(const CartScreen()),child: const Padding(
+          onTap: () => Get.to(CartScreen()),child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Icon(Icons.shopping_cart,color: AppConstants.appTextColor,),
           ))],

@@ -1,102 +1,172 @@
 // ignore_for_file: file_names
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_card/image_card.dart';
+import '../../modals/cartModal.dart';
 import '../../utils/constant.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
-
+  CartScreen({super.key});
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppConstants.appTextColor,
       appBar: AppBar(
-        actions: const <Widget>[Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          child: Icon(Icons.delete_forever,color: AppConstants.appTextColor,),
-        )],
+        actions: const <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Icon(
+              Icons.delete_forever,
+              color: AppConstants.appTextColor,
+            ),
+          )
+        ],
         elevation: 5,
         iconTheme: const IconThemeData(),
         title:
             Text("My Cart", style: mainHeading(28, AppConstants.appTextColor)),
         backgroundColor: AppConstants.appMainColor,
       ),
-      body: SizedBox(
-          child: ListView.builder(
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 5,
-                  child: ListTile(
-                    title: Text(
-                      "Hello world",
-                      style: mainHeading(20, AppConstants.appMainColor),
-                    ),
-                    leading: CircleAvatar(
-                      backgroundColor: AppConstants.appOrangeColor,
-                      child: Text(
-                        "H",
-                        style: mainHeading(30, AppConstants.appSecondryColor),
-                      ),
-                    ),
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Rs: 1500',
-                          style: tittle(18, AppConstants.appSecondryColor),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 1, vertical: 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      padding: const EdgeInsets.all(0),
-                                      minimumSize:
-                                          Size(Get.width / 15, Get.height / 40),
-                                      backgroundColor:
-                                          AppConstants.appSecondryColor),
-                                  onPressed: () {},
-                                  child: Text(
-                                    '-',
-                                    style:
-                                        tittle(24, AppConstants.appTextColor),
-                                  )),
-                              SizedBox(
-                                width: Get.width / 20,
-                              ),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      padding: const EdgeInsets.all(0),
-                                      minimumSize:
-                                          Size(Get.width / 15, Get.height / 40),
-                                      backgroundColor:
-                                          AppConstants.appSecondryColor),
-                                  onPressed: () {},
-                                  child: Text(
-                                    '+',
-                                    style:
-                                        tittle(24, AppConstants.appTextColor),
-                                  )),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+      body: FutureBuilder(
+          future: FirebaseFirestore.instance
+              .collection('cart')
+              .doc(user!.uid)
+              .collection('cartOrders')
+              .get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  "Error",
+                  style: tittle(20, AppConstants.appErrorColor),
+                ),
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox(
+                height: Get.height / 5,
+                child: const Center(
+                  child: CupertinoActivityIndicator(
+                    color: AppConstants.appyellowColor,
                   ),
-                );
-              })),
+                ),
+              );
+            }
+            if (snapshot.data!.docs.isEmpty) {
+              return Center(
+                child: Text(
+                  "No Product Found",
+                  style: tittle(20, AppConstants.appErrorColor),
+                ),
+              );
+            }
+            if (snapshot.data != null) {
+              return SizedBox(
+                  child: ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        final cartData = snapshot.data!.docs[index];
+                    CartModel cartModal = CartModel(
+                        productImage: cartData['productImage'],
+                        catId: cartData['catId'],
+                        catName: cartData['catName'],
+                        productId: cartData['productId'],
+                        productName: cartData['productName'],
+                        productDescription: cartData['productDescription'],
+                        productPrice: cartData['productPrice'],
+                        productSalePrice: cartData['productSalePrice'],
+                        isSale: cartData['isSale'],
+                        createdAt: cartData['createdAt'],
+                        updatedAt: cartData['updatedAt'],
+                        deliveryTime: cartData['deliveryTime'],
+                        productQuantity: cartData['productQuantity'],
+                        productTotalPrice: cartData['productTotalPrice']);
+                        return Card(
+                          elevation: 5,
+                          child: ListTile(
+                            title: Text(
+                              cartModal.productName,
+                              style: mainHeading(20, AppConstants.appMainColor),
+                            ),
+                            leading: CircleAvatar(
+                              backgroundColor: AppConstants.appOrangeColor,
+                              backgroundImage: NetworkImage(cartModal.productImage[0]),
+                              child: Text(
+                              cartModal.productName[0],
+                              style: mainHeading(20, AppConstants.appMainColor),
+                            ),
+                            ),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Rs ${cartModal.productTotalPrice.toString()}'
+                                  ,
+                                  style:
+                                      tittle(18, AppConstants.appSecondryColor),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 1, vertical: 0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                              padding: const EdgeInsets.all(0),
+                                              minimumSize: Size(Get.width / 15,
+                                                  Get.height / 40),
+                                              backgroundColor: AppConstants
+                                                  .appSecondryColor),
+                                          onPressed: () {},
+                                          child: Text(
+                                            '-',
+                                            style: tittle(
+                                                24, AppConstants.appTextColor),
+                                          )),
+                                      SizedBox(
+                                        width: Get.width / 20,
+                                      ),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                              padding: const EdgeInsets.all(0),
+                                              minimumSize: Size(Get.width / 15,
+                                                  Get.height / 40),
+                                              backgroundColor: AppConstants
+                                                  .appSecondryColor),
+                                          onPressed: () {},
+                                          child: Text(
+                                            '+',
+                                            style: tittle(
+                                                24, AppConstants.appTextColor),
+                                          )),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      }));
+            }
+            return const Text("data");
+          }),
+
       bottomNavigationBar: Container(
         width: Get.width,
         height: Get.height / 8,
@@ -125,7 +195,7 @@ class CartScreen extends StatelessWidget {
               ),
                 ],
               ),
-              
+
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     maximumSize: const Size(120,50),

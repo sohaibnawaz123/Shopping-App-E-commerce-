@@ -7,10 +7,10 @@ import 'package:ecommerce_app/modals/cartModal.dart';
 import 'package:ecommerce_app/modals/product_modal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../utils/constant.dart';
+import 'cartScreen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   User? user = FirebaseAuth.instance.currentUser;
@@ -28,6 +28,11 @@ class ProductDetailScreen extends StatelessWidget {
         title: Text("Product Detail",
             style: mainHeading(28, AppConstants.appTextColor)),
         backgroundColor: AppConstants.appMainColor,
+        actions: [GestureDetector(
+          onTap: () => Get.to(CartScreen()),child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Icon(Icons.shopping_cart,color: AppConstants.appTextColor,),
+          ))],
       ),
       body: SizedBox(
         width: Get.width,
@@ -227,7 +232,7 @@ class ProductDetailScreen extends StatelessWidget {
         'productTotalPrice': totalPrice
       });
 
-      print("product exists");
+      // print("product exists");
     } else {
       await FirebaseFirestore.instance.collection('cart').doc(uId).set(
         {
@@ -257,7 +262,7 @@ class ProductDetailScreen extends StatelessWidget {
 
       await documentReference.set(cartModel.toMap());
 
-      print("product added");
+      // print("product added");
     }
   }
 }
