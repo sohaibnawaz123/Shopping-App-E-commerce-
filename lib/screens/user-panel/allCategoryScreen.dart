@@ -24,8 +24,8 @@ class AllCategoryScreen extends StatelessWidget {
             style: mainHeading(28, AppConstants.appTextColor)),
         backgroundColor: AppConstants.appMainColor,
       ),
-      body: FutureBuilder(
-          future: FirebaseFirestore.instance.collection("categories").get(),
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection("categories").snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
