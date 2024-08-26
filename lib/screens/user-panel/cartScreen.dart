@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, must_be_immutable
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/controllers/cart-price-controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import '../../utils/constant.dart';
 class CartScreen extends StatelessWidget {
   CartScreen({super.key});
   User? user = FirebaseAuth.instance.currentUser;
+  final CartTotalPriceController cartTotalPriceController =
+      Get.put(CartTotalPriceController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +81,8 @@ class CartScreen extends StatelessWidget {
                             deliveryTime: cartData['deliveryTime'],
                             productQuantity: cartData['productQuantity'],
                             productTotalPrice: cartData['productTotalPrice']);
+                        cartTotalPriceController.fetchProductPrice();
+
                         return SwipeActionCell(
                           key: ObjectKey(cartModal.productId),
                           leadingActions: [
@@ -101,7 +106,9 @@ class CartScreen extends StatelessWidget {
                           ],
                           child: Card(
                             elevation: 5,
+                            shadowColor: AppConstants.appSecondryColor,
                             child: ListTile(
+                              
                               title: Text(
                                 cartModal.productName,
                                 style:
@@ -161,10 +168,15 @@ class CartScreen extends StatelessWidget {
                                                           .productQuantity -
                                                       1,
                                                   'productTotalPrice': (double
-                                                              .parse(cartModal.isSale?cartModal
-                                                                  .productSalePrice:cartModal.productPrice) *
-                                                          (cartModal
-                                                              .productQuantity -1))
+                                                          .parse(cartModal
+                                                                  .isSale
+                                                              ? cartModal
+                                                                  .productSalePrice
+                                                              : cartModal
+                                                                  .productPrice) *
+                                                      (cartModal
+                                                              .productQuantity -
+                                                          1))
                                                 });
                                               }
                                             },
@@ -174,7 +186,7 @@ class CartScreen extends StatelessWidget {
                                                   AppConstants.appTextColor),
                                             )),
                                         SizedBox(
-                                          width: Get.width / 20,
+                                          width: Get.width / 10,
                                           child: Text(
                                             cartModal.productQuantity
                                                 .toString(),
@@ -196,7 +208,7 @@ class CartScreen extends StatelessWidget {
                                                     Get.height / 40),
                                                 backgroundColor: AppConstants
                                                     .appSecondryColor),
-                                            onPressed: () async{
+                                            onPressed: () async {
                                               if (cartModal.productQuantity >
                                                   0) {
                                                 await FirebaseFirestore.instance
@@ -209,10 +221,15 @@ class CartScreen extends StatelessWidget {
                                                           .productQuantity +
                                                       1,
                                                   'productTotalPrice': (double
-                                                              .parse(cartModal.isSale?cartModal
-                                                                  .productSalePrice:cartModal.productPrice) *
-                                                          (cartModal
-                                                              .productQuantity +1))
+                                                          .parse(cartModal
+                                                                  .isSale
+                                                              ? cartModal
+                                                                  .productSalePrice
+                                                              : cartModal
+                                                                  .productPrice) *
+                                                      (cartModal
+                                                              .productQuantity +
+                                                          1))
                                                 });
                                               }
                                             },
@@ -250,16 +267,16 @@ class CartScreen extends StatelessWidget {
                 children: [
                   Text(
                     "SUB TOTAL=",
-                    style: mainHeading(24, AppConstants.appTextColor,
+                    style: mainHeading(20, AppConstants.appTextColor,
                         fontweight: FontWeight.w600),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(
-                    "Rs: 3000",
-                    style: mainHeading(24, AppConstants.appTextColor),
-                  ),
+                  Obx(()=>Text(
+                    "${cartTotalPriceController.totalPrice.value.toStringAsFixed(1)} PKR",
+                    style: mainHeading(22, AppConstants.appTextColor,fontweight: FontWeight.bold),
+                  ),),
                 ],
               ),
               ElevatedButton(
