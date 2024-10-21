@@ -95,7 +95,7 @@ class AllProductScreen extends StatelessWidget {
                                 tagRunSpacing: 0.0,
                                 tagSpacing: 0.0,
                                 color: AppConstants.appSecondryColor,
-                                borderRadius: 20.0,
+                                borderRadius: 10.0,
                                 width: Get.width * 0.45,
                                 heightImage: Get.height / 6,
                                 imageProvider: CachedNetworkImageProvider(
