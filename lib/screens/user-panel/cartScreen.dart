@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/controllers/cart-price-controller.dart';
+import 'package:ecommerce_app/screens/user-panel/checkOutScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +109,6 @@ class CartScreen extends StatelessWidget {
                             elevation: 5,
                             shadowColor: AppConstants.appSecondryColor,
                             child: ListTile(
-                              
                               title: Text(
                                 cartModal.productName,
                                 style:
@@ -273,10 +273,13 @@ class CartScreen extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  Obx(()=>Text(
-                    "${cartTotalPriceController.totalPrice.value.toStringAsFixed(1)} PKR",
-                    style: mainHeading(22, AppConstants.appTextColor,fontweight: FontWeight.bold),
-                  ),),
+                  Obx(
+                    () => Text(
+                      "${cartTotalPriceController.totalPrice.value.toStringAsFixed(1)} PKR",
+                      style: mainHeading(22, AppConstants.appTextColor,
+                          fontweight: FontWeight.bold),
+                    ),
+                  ),
                 ],
               ),
               ElevatedButton(
@@ -286,7 +289,9 @@ class CartScreen extends StatelessWidget {
                           horizontal: 5, vertical: 2),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(CheckOutScreen());
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

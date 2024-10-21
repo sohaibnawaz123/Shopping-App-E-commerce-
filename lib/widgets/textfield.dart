@@ -1,11 +1,12 @@
 import 'package:ecommerce_app/utils/constant.dart';
 import 'package:flutter/material.dart';
 
-TextField customTextField(TextEditingController controller,TextInputType keyboardType ,String hintText, Widget prefixIcon, {Widget? suffixicon , bool hideText = false}) {
+TextField customTextField(TextEditingController controller,TextInputType keyboardType ,String hintText, Widget prefixIcon, {TextInputAction? textInputAction, Widget? suffixicon , bool hideText = false}) {
   return TextField(
     cursorColor: AppConstants.appMainColor,
     controller: controller,
     obscureText: hideText,
+    textInputAction: textInputAction,
     keyboardType: keyboardType,
     decoration: InputDecoration(
       prefixIcon:prefixIcon,
