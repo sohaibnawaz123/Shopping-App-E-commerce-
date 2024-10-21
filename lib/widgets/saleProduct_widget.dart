@@ -83,7 +83,7 @@ class SaleProductWidget extends StatelessWidget {
                               tagRunSpacing: 0.0,
                               tagSpacing: 0.0,
                               color: AppConstants.appSecondryColor,
-                              borderRadius: 20.0,
+                              borderRadius: 10.0,
                               width: Get.width / 3.5,
                               heightImage: Get.height / 12,
                               imageProvider: CachedNetworkImageProvider(

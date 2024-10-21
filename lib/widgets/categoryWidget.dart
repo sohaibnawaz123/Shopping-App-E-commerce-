@@ -68,7 +68,7 @@ class CategoryWidget extends StatelessWidget {
                               tagRunSpacing: 0.0,
                               tagSpacing:0.0 ,
                               color: AppConstants.appSecondryColor,
-                              borderRadius: 20.0,
+                              borderRadius: 10.0,
                               
                               width: Get.width/4.0,
                               heightImage: Get.height/9,

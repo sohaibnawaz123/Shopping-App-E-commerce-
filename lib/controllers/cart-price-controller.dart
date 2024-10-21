@@ -15,21 +15,26 @@ class CartTotalPriceController extends GetxController {
   }
 
   void fetchProductPrice() async {
-    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-        .instance
+    FirebaseFirestore.instance
         .collection("cart")
         .doc(user!.uid)
         .collection('cartOrders')
-        .get();
+        .snapshots()
+        .listen((snapshot) {
+      double sum = 0.0;
 
-    double sum = 0.0;
-
-    for (final doc in snapshot.docs) {
-      final data = doc.data();
-      if (data != null && data.containsKey('productTotalPrice')) {
-        sum += (data['productTotalPrice'] as num).toDouble();
+      // Check if there are items in the cart
+      if (snapshot.docs.isNotEmpty) {
+        for (final doc in snapshot.docs) {
+          final data = doc.data();
+          if (data != null && data.containsKey('productTotalPrice')) {
+            sum += (data['productTotalPrice'] as num).toDouble();
+          }
+        }
       }
-    }
-    totalPrice.value = sum;
+
+      // Update totalPrice with the calculated sum (0.0 if no items)
+      totalPrice.value = sum;
+    });
   }
 }
