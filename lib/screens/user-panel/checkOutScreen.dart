@@ -2,6 +2,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/controllers/cart-price-controller.dart';
+import 'package:ecommerce_app/controllers/deviceToken_controller.dart';
+import 'package:ecommerce_app/services/placeOrders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +16,12 @@ class CheckOutScreen extends StatelessWidget {
   CheckOutScreen({super.key});
   User? user = FirebaseAuth.instance.currentUser;
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   final CartTotalPriceController cartTotalPriceController =
       Get.put(CartTotalPriceController());
+  final DeviceTokenController _deviceTokenController =
+      Get.put(DeviceTokenController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,7 +168,7 @@ class CheckOutScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
               onPressed: () {
-                placeOrderSheet();
+                placeOrderSheet(context);
               },
               child: Text(
                 "Place Order",
@@ -173,11 +179,11 @@ class CheckOutScreen extends StatelessWidget {
     );
   }
 
-  void placeOrderSheet() {
+  void placeOrderSheet(context) {
     Get.bottomSheet(
       Container(
         width: Get.width,
-        height: Get.height/2.5,
+        height: Get.height / 2.5,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20)),
@@ -198,7 +204,7 @@ class CheckOutScreen extends StatelessWidget {
                 ),
               ),
               customTextField(
-                _nameController,
+                _phoneController,
                 TextInputType.number,
                 textInputAction: TextInputAction.next,
                 "Phone #",
@@ -208,7 +214,7 @@ class CheckOutScreen extends StatelessWidget {
                 ),
               ),
               customTextField(
-                _nameController,
+                _addressController,
                 TextInputType.text,
                 textInputAction: TextInputAction.done,
                 "Address",
@@ -224,7 +230,25 @@ class CheckOutScreen extends StatelessWidget {
                           horizontal: 5, vertical: 2),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
-                  onPressed: () {},
+                  onPressed: () async {
+                    String name = _nameController.text.trim();
+                    String phoneNumber = _phoneController.text.trim();
+                    String address = _addressController.text.trim();
+                    
+                    if (name.isNotEmpty &&
+                        phoneNumber.isNotEmpty &&
+                        address.isNotEmpty) {
+                      String deviceToken =
+                        await _deviceTokenController.getCustomerDeviceToken();
+                        placeOrders(context:context,name:name,
+                      phone:phoneNumber,address:address,token:deviceToken);
+                    } else {
+                      Get.snackbar("Error", "Fill The Feilds",
+                          backgroundColor: AppConstants.appErrorColor,
+                          colorText: AppConstants.appTextColor,
+                          snackPosition: SnackPosition.TOP);
+                    }
+                  },
                   child: Text(
                     "Confirm Order",
                     style: mainHeading(28, AppConstants.appSecondryColor),
