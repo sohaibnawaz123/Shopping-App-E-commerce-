@@ -2,6 +2,7 @@
 
 import 'package:ecommerce_app/screens/authsUi/welcome-screen.dart';
 import 'package:ecommerce_app/screens/user-panel/allSallProductScreen.dart';
+import 'package:ecommerce_app/screens/user-panel/fetchOrder.dart';
 import 'package:ecommerce_app/screens/user-panel/main-screen.dart';
 import 'package:ecommerce_app/utils/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -134,6 +135,31 @@ class CustomDrawer extends StatelessWidget {
               onTap: ()=>Get.to(const AllCategoryScreen()),
               titleAlignment: ListTileTitleAlignment.center,
               title: Text("Categories",
+                  style: mainHeading(24.0, AppConstants.appTextColor)),
+              leading: const Icon(
+                Icons.category_outlined,
+                color: AppConstants.appyellowColor,
+                size: 28.0,
+              ),
+              trailing: const Icon(
+                Icons.keyboard_double_arrow_right,
+                color: AppConstants.appyellowColor,
+                size: 24.0,
+              ),
+            ),
+          ),
+          const Divider(
+            height: 0.0,
+            indent: 30.0,
+            thickness: 1.5,
+            color: AppConstants.appMainColor,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+            child: ListTile(
+              onTap: ()=>Get.to(FetchOrdersScreen()),
+              titleAlignment: ListTileTitleAlignment.center,
+              title: Text("Confirm Orders",
                   style: mainHeading(24.0, AppConstants.appTextColor)),
               leading: const Icon(
                 Icons.category_outlined,
