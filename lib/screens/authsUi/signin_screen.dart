@@ -184,7 +184,7 @@ class SigninScreen extends StatelessWidget {
                                                   colorText: AppConstants
                                                       .appTextColor);
                                                   }else{
-                                                    Get.offAll(const MainScreen());
+                                                    Get.offAll(MainScreen());
                                                     Get.snackbar("Success",
                                                   "Login Successfull",
                                                   snackPosition:

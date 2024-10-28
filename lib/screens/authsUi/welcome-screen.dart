@@ -17,6 +17,7 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppConstants.appTextColor,
       appBar: AppBar(
+        toolbarHeight: 80,
         elevation: 0,
         backgroundColor: AppConstants.appMainColor,
         title: Text(

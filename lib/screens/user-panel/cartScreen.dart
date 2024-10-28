@@ -118,11 +118,7 @@ class CartScreen extends StatelessWidget {
                                 backgroundColor: AppConstants.appOrangeColor,
                                 backgroundImage:
                                     NetworkImage(cartModal.productImage[0]),
-                                child: Text(
-                                  cartModal.productName[0],
-                                  style: mainHeading(
-                                      20, AppConstants.appMainColor),
-                                ),
+                                
                               ),
                               subtitle: Row(
                                 mainAxisAlignment:

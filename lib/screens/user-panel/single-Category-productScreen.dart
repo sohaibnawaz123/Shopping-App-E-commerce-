@@ -22,6 +22,7 @@ class SingleCategoryProductScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppConstants.appTextColor,
       appBar: AppBar(
+        toolbarHeight: 80,
         iconTheme: const IconThemeData(),
         title: Text("Category: $catName",
             style: mainHeading(24, AppConstants.appTextColor)),

@@ -6,12 +6,14 @@ import 'package:get/get.dart';
 
 class CartTotalPriceController extends GetxController {
   RxDouble totalPrice = 0.0.obs;
+  var cartproductCount = 0.obs;
   User? user = FirebaseAuth.instance.currentUser;
 
   @override
   void onInit() {
     super.onInit();
     fetchProductPrice();
+    countCartProducts();
   }
 
   void fetchProductPrice() async {
@@ -35,6 +37,20 @@ class CartTotalPriceController extends GetxController {
 
       // Update totalPrice with the calculated sum (0.0 if no items)
       totalPrice.value = sum;
+      cartproductCount();
     });
+  }
+
+  void countCartProducts() async {
+    FirebaseFirestore.instance
+        .collection('cart')
+        .doc(user!.uid)
+        .collection('cartOrders')
+        .snapshots().listen((snapshots){
+          List<QueryDocumentSnapshot> documents = snapshots.docs;
+         cartproductCount.value = documents.length;
+        });
+    
+   
   }
 }

@@ -9,12 +9,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../controllers/cart-price-controller.dart';
 import '../../utils/constant.dart';
 import 'cartScreen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   User? user = FirebaseAuth.instance.currentUser;
   ProductModal productModal;
+  final CartTotalPriceController _cartTotalPriceController =
+      Get.put(CartTotalPriceController());
 
   ProductDetailScreen({super.key, required this.productModal});
   var isFav = false.obs;
@@ -23,16 +26,49 @@ class ProductDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppConstants.appTextColor,
       appBar: AppBar(
-        elevation: 2,
+        toolbarHeight: 80,
         iconTheme: const IconThemeData(),
-        title: Text("Product Detail",
+        title: Text(AppConstants.appMainName,
             style: mainHeading(28, AppConstants.appTextColor)),
         backgroundColor: AppConstants.appMainColor,
-        actions: [GestureDetector(
-          onTap: () => Get.to(CartScreen()),child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Icon(Icons.shopping_cart,color: AppConstants.appTextColor,),
-          ))],
+        actions: [
+          SizedBox(
+            width: 100,
+            child: GestureDetector(
+                onTap: () => Get.to(CartScreen()),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Stack(
+                    children: [
+                      const Align(
+                        alignment: Alignment(0, 0),
+                        child: Icon(
+                          Icons.shopping_cart,
+                          color: AppConstants.appTextColor,size: 35,
+                        ),
+                      ),
+                      Align(
+                        alignment: const Alignment(0.5, -0.5),
+                        child: Container(
+                          width: 25,
+                          height: 25,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppConstants.appTextColor
+                          ),
+                          child: Obx(() => Text(
+                                _cartTotalPriceController.cartproductCount.value
+                                    .toString(),
+                                style: appText(20, AppConstants.appMainColor),
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+          )
+        ],
       ),
       body: SizedBox(
         width: Get.width,

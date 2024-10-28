@@ -16,6 +16,7 @@ class FetchOrdersScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppConstants.appTextColor,
       appBar: AppBar(
+        toolbarHeight: 80,
         elevation: 5,
         iconTheme: const IconThemeData(),
         title:

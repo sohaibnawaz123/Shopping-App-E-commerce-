@@ -91,7 +91,7 @@ void placeOrders(
         backgroundColor: AppConstants.appSuccessColor,
         colorText: AppConstants.appTextColor,
       );
-      Get.offAll(() => const MainScreen());
+      Get.offAll(() => MainScreen());
     } catch (e) {
       EasyLoading.dismiss();
       throw Exception(e);

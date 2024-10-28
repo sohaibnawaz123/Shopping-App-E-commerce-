@@ -19,6 +19,7 @@ class AllSaleProductScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppConstants.appTextColor,
       appBar: AppBar(
+        toolbarHeight: 80,
         iconTheme: const IconThemeData(),
         title: Text("Sale Product",
             style: mainHeading(28, AppConstants.appTextColor)),

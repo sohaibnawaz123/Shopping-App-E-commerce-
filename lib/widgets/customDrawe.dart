@@ -57,7 +57,7 @@ class CustomDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             child: ListTile(
-              onTap: ()=>Get.offAll(const MainScreen()),
+              onTap: ()=>Get.offAll(MainScreen()),
               titleAlignment: ListTileTitleAlignment.center,
               title: Text("Home",
                   style: mainHeading(24.0, AppConstants.appTextColor)),

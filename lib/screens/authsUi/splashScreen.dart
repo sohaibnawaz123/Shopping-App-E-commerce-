@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (userData[0]["isAdmin"] == true) {
         Get.offAll(() => const AdminPanel());
       } else {
-        Get.offAll(() => const MainScreen());
+        Get.offAll(() => MainScreen());
       }
     } else {
       Get.offAll(() => WelcomeScreen());
