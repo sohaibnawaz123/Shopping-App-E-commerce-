@@ -80,7 +80,7 @@ void placeOrders(
             .doc(orderModal.productId)
             .delete()
             .then((value) {
-          print('Delete ${orderModal.productId}');
+          // print('Delete ${orderModal.productId}');
         });
       }
       EasyLoading.dismiss();
@@ -94,7 +94,7 @@ void placeOrders(
       Get.offAll(() => const MainScreen());
     } catch (e) {
       EasyLoading.dismiss();
-      print(e);
+      throw Exception(e);
     }
   }
 }
