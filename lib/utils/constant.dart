@@ -23,11 +23,12 @@ TextStyle mainHeading(double size, Color color, {FontWeight fontweight = FontWei
     decorationColor: dcolor);
 }
 
-TextStyle tittle(double size, Color color,{TextDecoration decoration = TextDecoration.none,Color dcolor = AppConstants.appTextColor}) {
+TextStyle tittle(double size, Color color,{FontWeight? fontweight,TextDecoration decoration = TextDecoration.none,Color dcolor = AppConstants.appTextColor}) {
   return TextStyle(
     fontFamily: "poppins-M",
     color: color,
     fontSize: size,
+    fontWeight: fontweight,
     decoration: decoration,
     decorationColor: dcolor
   );
